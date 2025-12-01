@@ -20,7 +20,7 @@ async def main():
         print("[Success] Gemini API key setup complete.")
 
         # Initialize the agent hierarchy
-        root_agent = create_task_planner_agent()
+        root_agent, session_service = create_task_planner_agent()
         runner = InMemoryRunner(agent=root_agent)
 
         while True:
@@ -30,7 +30,7 @@ async def main():
                 break
 
             print("\n--- Starting Task ---")
-            response = await runner.run_debug(userinput)
+            response = await runner.run_debug(userinput, session_id='session_service')
             print("\n--- Task Completed ---")
             print(response)
             
@@ -43,7 +43,7 @@ async def main():
 
         
     except Exception as e:
-        
+
         print(f"[Auth Error]: Please make sure you have added 'GOOGLE_API_KEY' to your Kaggle secrets. Details: {e}")
 
 if __name__ == "__main__":

@@ -1,6 +1,9 @@
 from google.adk.agents import Agent, SequentialAgent
 from google.adk.tools import google_search
 from src.tools.visualization import plot_expenses
+from google.adk.sessions import InMemorySessionService
+from google.adk.sessions import DatabaseSessionService
+from sqlalchemy import create_engine
 def create_task_planner_agent():
     """
     Creates and configures the Task Planner agent hierarchy.
@@ -90,5 +93,9 @@ def create_task_planner_agent():
         description="A travel planning coordinator that finds destinations, calculates expenses, and visualizes the data.",
         sub_agents=[destination_agent, expense_agent, visualization_agent],
     )
+
+    db_url = "sqlite:///my_agent_data.db"
+    engine = create_engine(db_url)
+    session_service = InMemorySessionService()
     
-    return root_agent
+    return root_agent, session_service
